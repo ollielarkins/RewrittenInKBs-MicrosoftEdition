@@ -1,0 +1,86 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Notepad</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  html,body{height:100%;margin:0}
+  body{display:flex;flex-direction:column;font:14px/1.4 system-ui,sans-serif}
+  #bar{display:flex;gap:.5rem;padding:.4rem;border-bottom:1px solid #0002}
+  #bar button{font:inherit;padding:.25rem .7rem;cursor:pointer}
+  #name{margin-left:auto;align-self:center;color:#888;font-size:12px}
+  textarea{flex:1;border:0;outline:0;resize:none;padding:.8rem;
+           font:14px/1.5 ui-monospace,Consolas,monospace;
+           white-space:pre;tab-size:4}
+  @media(prefers-color-scheme:dark){
+    body{background:#1e1e1e;color:#ddd}
+    textarea{background:#1e1e1e;color:#ddd}
+  }
+</style>
+
+<div id="bar">
+  <button id="open">Open</button>
+  <button id="save">Save</button>
+  <span id="name">untitled.txt</span>
+</div>
+<textarea id="pad" spellcheck="false" autofocus placeholder="Start typing…"></textarea>
+
+<script>
+const pad = document.getElementById('pad');
+const name = document.getElementById('name');
+let handle = null;                              // File System Access handle, if granted
+
+// --- Auto-save (LocalStorage) ---------------------------------------------
+pad.value = localStorage.getItem('notepad') || '';
+pad.addEventListener('input', () => localStorage.setItem('notepad', pad.value));
+
+// --- Open ------------------------------------------------------------------
+document.getElementById('open').onclick = async () => {
+  if (window.showOpenFilePicker) {
+    const [h] = await showOpenFilePicker().catch(() => []);
+    if (!h) return;
+    handle = h;
+    const file = await h.getFile();
+    pad.value = await file.text();
+    name.textContent = file.name;
+  } else {                                      // fallback: hidden <input type=file>
+    const i = Object.assign(document.createElement('input'), {type: 'file'});
+    i.onchange = async () => {
+      pad.value = await i.files[0].text();
+      name.textContent = i.files[0].name;
+      localStorage.setItem('notepad', pad.value);
+    };
+    i.click();
+    return;
+  }
+  localStorage.setItem('notepad', pad.value);
+};
+
+// --- Save ------------------------------------------------------------------
+document.getElementById('save').onclick = async () => {
+  const text = pad.value;
+  if (window.showSaveFilePicker) {
+    handle = handle || await showSaveFilePicker({
+      suggestedName: name.textContent,
+      types: [{accept: {'text/plain': ['.txt']}}]
+    }).catch(() => null);
+    if (!handle) return;
+    const w = await handle.createWritable();
+    await w.write(text);
+    await w.close();
+    name.textContent = (await handle.getFile()).name;
+  } else {                                      // fallback: download blob
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], {type: 'text/plain'}));
+    a.download = name.textContent;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+};
+
+// --- Keyboard: Ctrl+S / Ctrl+O (undo/redo is native to the textarea) -------
+addEventListener('keydown', e => {
+  if (!(e.ctrlKey || e.metaKey)) return;
+  if (e.key === 's') { e.preventDefault(); document.getElementById('save').click(); }
+  if (e.key === 'o') { e.preventDefault(); document.getElementById('open').click(); }
+});
+</script>
