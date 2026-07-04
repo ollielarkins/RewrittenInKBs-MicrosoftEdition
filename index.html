@@ -1,36 +1,32 @@
-<!doctype html><meta charset=utf-8><title>Rewritten in KBs — Microsoft Edition</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content=#1e1e1e><style>
-:root{--bg:#fff;--fg:#1a1a1a;--mut:#888;--ln:#0000001a;--ac:#3c8cf0}
-@media(prefers-color-scheme:dark){:root{--bg:#1e1e1e;--fg:#e6e6e6;--mut:#8a8a8a;--ln:#ffffff1f}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.wrap{max-width:640px;margin:0 auto;padding:4rem 1.25rem}
-h1{font-size:1.9rem;margin:0;letter-spacing:-.02em}
-.sub{color:var(--mut);margin:.6rem 0 2.5rem;font-size:1.05rem}
-.ep{display:flex;align-items:center;gap:1rem;padding:1rem 0;border-top:1px solid var(--ln);text-decoration:none;color:inherit}
-.ep:last-child{border-bottom:1px solid var(--ln)}
-.ep:hover .name{color:var(--ac)}
-.no{font:600 .8rem/1 ui-monospace,monospace;color:var(--mut);min-width:2.2rem}
-.name{font-weight:600;font-size:1.15rem}
-.stat{color:var(--mut);font-size:.9rem;margin-top:.15rem}
-.soon{opacity:.5;cursor:default}
-.arrow{margin-left:auto;color:var(--mut)}
-footer{margin-top:2.5rem;color:var(--mut);font-size:.85rem}
-footer a{color:var(--ac);text-decoration:none}
+<!doctype html><meta charset=utf-8><title>Rewritten in KBs — Microsoft Edition</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content=#ffffff><style>
+:root{--bg:#fff;--fg:#1e1e1e;--mut:#888;--ln:#0000001a}
+@media(prefers-color-scheme:dark){:root{--bg:#1e1e1e;--fg:#ddd;--ln:#ffffff1f}}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:3rem 1.25rem}
+h1{font-size:1.25rem;font-weight:600;margin:0}
+.sub{color:var(--mut);margin:.4rem 0 2rem}
+a.ep{display:flex;gap:1rem;padding:.7rem;border-radius:6px;text-decoration:none;color:inherit;border-top:1px solid var(--ln)}
+a.ep:hover{background:var(--ln)}
+.no{color:var(--mut);font:12px/1.6 ui-monospace,Consolas,monospace}
+.name{font-weight:600}
+.stat{color:var(--mut);font-size:12.5px;margin-top:.1rem}
+.soon{display:flex;gap:1rem;padding:.7rem;border-top:1px solid var(--ln);color:var(--mut)}
+footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--ln);color:var(--mut);font-size:12.5px}
+footer a{color:inherit}
 </style>
 <div class=wrap>
 <h1>Rewritten in KBs</h1>
-<p class=sub>Modern Microsoft apps, same job, a fraction of the size. One episode per app — dependency-free vanilla web, measured in kilobytes.</p>
+<p class=sub>Modern Microsoft apps, same job, a fraction of the size. One episode per app — dependency-free vanilla web.</p>
 
 <a class=ep href="notepad/">
   <span class=no>01</span>
-  <span><span class=name>Notepad</span><div class=stat>4.94 KB · 55× smaller than the 274 KB .exe</div></span>
-  <span class=arrow>→</span>
+  <span><div class=name>Notepad</div><div class=stat>4.94 KB · 55× smaller than the 274 KB .exe</div></span>
 </a>
 
-<div class="ep soon">
+<div class=soon>
   <span class=no>02</span>
-  <span><span class=name>Coming soon</span><div class=stat>next episode in the series</div></span>
+  <span><div class=name>Coming soon</div><div class=stat>next in the series</div></span>
 </div>
 
-<footer>Source on <a href="https://github.com/ollielarkins/RewrittenInKBs-MicrosoftEdition">GitHub</a>.</footer>
+<footer><a href="https://github.com/ollielarkins/RewrittenInKBs-MicrosoftEdition">Source on GitHub</a></footer>
 </div>
