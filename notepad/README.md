@@ -1,6 +1,7 @@
 # Notepad — Rewritten in KBs (Microsoft Edition)
 
 The pilot episode: Microsoft Notepad, rewritten smaller.
+📝 [Read the write-up on Medium](https://medium.com/@info.oliverlarkins/rewritten-in-kbs-microsoft-notepad-a-pilot-episode-020255aff0b1)
 
 Modern Notepad is ~274KB on disk and ~59MB of RAM to open a text box. This is
 the part users actually use — as an **installable app of 4.94KB** (HTML +

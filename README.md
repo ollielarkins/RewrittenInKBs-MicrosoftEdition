@@ -8,9 +8,9 @@ One folder per episode.
 
 ## Episodes
 
-| # | App | Size | Live | Source |
-|---|-----|------|------|--------|
-| 1 | **Notepad** | 4.94 KB (55× smaller than the 274 KB `.exe`) | [open](https://ollielarkins.github.io/RewrittenInKBs-MicrosoftEdition/notepad/) | [`/notepad`](notepad/) |
+| # | App | Size | Live | Source | Post |
+|---|-----|------|------|--------|------|
+| 1 | **Notepad** | 4.94 KB (55× smaller than the 274 KB `.exe`) | [open](https://ollielarkins.github.io/RewrittenInKBs-MicrosoftEdition/notepad/) | [`/notepad`](notepad/) | [read](https://medium.com/@info.oliverlarkins/rewritten-in-kbs-microsoft-notepad-a-pilot-episode-020255aff0b1) |
 
 ## Hosting
 
