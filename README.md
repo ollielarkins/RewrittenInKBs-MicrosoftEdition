@@ -3,9 +3,9 @@
 The pilot episode: Microsoft Notepad, rewritten smaller.
 
 Modern Notepad is ~274KB on disk and ~59MB of RAM to open a text box. This is
-the part users actually use — as an **installable app under 8.4KB** (HTML +
-manifest + service worker + all three icons). No Electron, no Chromium bundle,
-no build step. That's ~33× smaller than the .exe it replaces.
+the part users actually use — as an **installable app under 4KB** (HTML +
+manifest + service worker + a single SVG icon). No Electron, no Chromium bundle,
+no build step. That's ~70× smaller than the .exe it replaces.
 
 ## Install it
 
