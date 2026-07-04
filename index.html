@@ -36,14 +36,16 @@ pad.addEventListener('input', () => localStorage.setItem('notepad', pad.value));
 // --- Open ------------------------------------------------------------------
 document.getElementById('open').onclick = async () => {
   if (window.showOpenFilePicker) {
-    const [h] = await showOpenFilePicker().catch(() => []);
+    const [h] = await showOpenFilePicker({
+      types: [{description: 'Text', accept: {'text/plain': ['.txt']}}]
+    }).catch(() => []);
     if (!h) return;
     handle = h;
     const file = await h.getFile();
     pad.value = await file.text();
     name.textContent = file.name;
   } else {                                      // fallback: hidden <input type=file>
-    const i = Object.assign(document.createElement('input'), {type: 'file'});
+    const i = Object.assign(document.createElement('input'), {type: 'file', accept: '.txt,text/plain'});
     i.onchange = async () => {
       pad.value = await i.files[0].text();
       name.textContent = i.files[0].name;
