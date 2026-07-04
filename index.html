@@ -2,6 +2,9 @@
 <meta charset="utf-8">
 <title>Notepad</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1e1e1e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
 <style>
   html,body{height:100%;margin:0}
   body{display:flex;flex-direction:column;font:14px/1.4 system-ui,sans-serif}
@@ -85,4 +88,8 @@ addEventListener('keydown', e => {
   if (e.key === 's') { e.preventDefault(); document.getElementById('save').click(); }
   if (e.key === 'o') { e.preventDefault(); document.getElementById('open').click(); }
 });
+
+// --- Make it an installable, offline app -----------------------------------
+if ('serviceWorker' in navigator)
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
 </script>
