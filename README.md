@@ -3,9 +3,9 @@
 The pilot episode: Microsoft Notepad, rewritten smaller.
 
 Modern Notepad is ~274KB on disk and ~59MB of RAM to open a text box. This is
-the part users actually use — as an **installable app under 4KB** (HTML +
+the part users actually use — as an **installable app under 4.8KB** (HTML +
 manifest + service worker + a single SVG icon). No Electron, no Chromium bundle,
-no build step. That's ~70× smaller than the .exe it replaces.
+no build step. That's ~58× smaller than the .exe it replaces.
 
 ## Install it
 
@@ -24,15 +24,18 @@ works; double-clicking the raw file falls back to a download.)
 ## Features (the ones that matter)
 
 - ✅ Edit plaintext
-- ✅ Save / open `.txt` files — native OS file dialogs, writes back to the file
+- ✅ Save / **Save As** / open `.txt` files — native OS file dialogs, writes back to the file
 - ✅ Undo / redo (free — native to the `<textarea>`)
 - ✅ Auto-save (LocalStorage — never lose your work)
+- ✅ Status bar — live line/column and word/character count
+- ✅ Filename in the title bar, with a • when there are unsaved changes
 - ✅ Offline + installable (service worker + web manifest)
 
 Gone on purpose: OneDrive sync, tabs, encoding pickers, CRLF/LF dialogs, font
 pickers, Copilot.
 
-Keyboard: `Ctrl+S` save, `Ctrl+O` open, `Ctrl+Z`/`Ctrl+Y` undo/redo.
+Keyboard: `Ctrl+S` save, `Ctrl+Shift+S` save as, `Ctrl+O` open,
+`Ctrl+Z`/`Ctrl+Y` undo/redo.
 
 ## How it's hosted
 

@@ -1,29 +1,44 @@
-<!doctype html><meta charset=utf-8><title>Notepad</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content=#1e1e1e><link rel=manifest href=manifest.webmanifest><link rel=icon href=icon.svg><style>html,body{height:100%;margin:0}body{display:flex;flex-direction:column;font:14px/1.4 system-ui,sans-serif}#b{display:flex;gap:.5rem;padding:.4rem;border-bottom:1px solid #0002}#b button{font:inherit;padding:.25rem .7rem;cursor:pointer}#n{margin-left:auto;align-self:center;color:#888;font-size:12px}textarea{flex:1;border:0;outline:0;resize:none;padding:.8rem;font:14px/1.5 ui-monospace,Consolas,monospace;white-space:pre;tab-size:4}@media(prefers-color-scheme:dark){body,textarea{background:#1e1e1e;color:#ddd}}</style><div id=b><button id=o>Open</button><button id=s>Save</button><span id=n>untitled.txt</span></div><textarea id=p spellcheck=false autofocus placeholder="Start typing…"></textarea><script>
-// Elements with an id are exposed as globals (p, n, o, s), so no getElementById.
-let h=null                                     // File System Access handle, if any
-p.value=localStorage.N||''                     // auto-save restore (LocalStorage)
-p.oninput=()=>localStorage.N=p.value
+<!doctype html><meta charset=utf-8><title>Notepad</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content=#1e1e1e><link rel=manifest href=manifest.webmanifest><link rel=icon href=icon.svg><style>:root{--bg:#fff;--fg:#1e1e1e;--mut:#888;--ln:#0000001a}@media(prefers-color-scheme:dark){:root{--bg:#1e1e1e;--fg:#ddd;--ln:#ffffff1f}}html,body{height:100%;margin:0}body{display:flex;flex-direction:column;font:14px/1.4 system-ui,sans-serif;background:var(--bg);color:var(--fg)}header,footer{display:flex;align-items:center;gap:.4rem;padding:.35rem .6rem}header{border-bottom:1px solid var(--ln)}footer{border-top:1px solid var(--ln);font-size:12px;color:var(--mut)}button{font:inherit;color:inherit;background:0;border:0;padding:.3rem .6rem;border-radius:6px;cursor:pointer}button:hover{background:var(--ln)}#n{margin-left:auto;color:var(--mut);font-size:12.5px}#pos{margin-left:auto}textarea{flex:1;border:0;outline:0;resize:none;padding:1rem;background:var(--bg);color:var(--fg);font:14px/1.6 ui-monospace,Consolas,monospace;white-space:pre;tab-size:4}textarea::placeholder{color:var(--mut)}</style><header><button id=o>Open</button><button id=s>Save</button><button id=sa>Save As</button><span id=n>untitled.txt</span></header><textarea id=p spellcheck=false autofocus placeholder="Start typing…"></textarea><footer><span id=cnt></span><span id=pos></span></footer><script>
+// Elements with an id are globals (p,n,o,s,sa,pos,cnt) — no getElementById.
+let h=null,dirty=false
+p.value=localStorage.N||''                     // restore auto-saved text
+
+function title(){document.title=(dirty?'• ':'')+n.textContent+' — Notepad'}
+function stat(){                                // status bar: Ln/Col + counts
+ const v=p.value,i=p.selectionStart,b=v.slice(0,i)
+ pos.textContent='Ln '+b.split('\n').length+', Col '+(i-b.lastIndexOf('\n'))
+ const w=v.trim()?v.trim().split(/\s+/).length:0
+ cnt.textContent=w+' words, '+v.length+' chars'
+}
+function saved(){dirty=false;localStorage.N=p.value;title();stat()}
+p.oninput=()=>{dirty=true;localStorage.N=p.value;title();stat()}
+document.onselectionchange=stat
+saved()
+
 o.onclick=async()=>{                            // Open
  if(window.showOpenFilePicker){
   const[g]=await showOpenFilePicker({types:[{accept:{'text/plain':['.txt']}}]}).catch(()=>[])
   if(!g)return;h=g;const f=await g.getFile();p.value=await f.text();n.textContent=f.name
- }else{                                         // fallback: <input type=file>
+ }else{
   const i=Object.assign(document.createElement('input'),{type:'file',accept:'.txt,text/plain'})
-  i.onchange=async()=>{p.value=await i.files[0].text();n.textContent=i.files[0].name;localStorage.N=p.value}
+  i.onchange=async()=>{p.value=await i.files[0].text();n.textContent=i.files[0].name;saved()}
   return i.click()
  }
- localStorage.N=p.value
+ saved()
 }
-s.onclick=async()=>{                            // Save
+async function save(as){                        // Save / Save As (as=true)
  const t=p.value
  if(window.showSaveFilePicker){
-  h=h||await showSaveFilePicker({suggestedName:n.textContent,types:[{accept:{'text/plain':['.txt']}}]}).catch(()=>null)
+  if(as||!h)h=await showSaveFilePicker({suggestedName:n.textContent,types:[{accept:{'text/plain':['.txt']}}]}).catch(()=>h)
   if(!h)return;const w=await h.createWritable();await w.write(t);await w.close();n.textContent=(await h.getFile()).name
- }else{                                         // fallback: download blob
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}))
-  a.download=n.textContent;a.click();URL.revokeObjectURL(a.href)
+ }else{
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}));a.download=n.textContent;a.click();URL.revokeObjectURL(a.href)
  }
+ dirty=false;title()
 }
-onkeydown=e=>{if(e.ctrlKey||e.metaKey){if(e.key=='s'){e.preventDefault();s.click()}if(e.key=='o'){e.preventDefault();o.click()}}}
+s.onclick=()=>save()
+sa.onclick=()=>save(true)
+onkeydown=e=>{if(e.ctrlKey||e.metaKey){const k=e.key.toLowerCase()
+ if(k=='s'){e.preventDefault();save(e.shiftKey)}else if(k=='o'){e.preventDefault();o.click()}}}
 'serviceWorker'in navigator&&addEventListener('load',()=>navigator.serviceWorker.register('sw.js'))
 </script>
