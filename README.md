@@ -60,6 +60,8 @@ Keyboard: `Ctrl+S` save, `Ctrl+Shift+S` save as, `Ctrl+O` open,
 
 ## How it's hosted
 
-Pushing to `main` triggers `.github/workflows/pages.yml`, which publishes the
-repo root to GitHub Pages. **One-time setup:** in the repo, go to
-*Settings → Pages → Build and deployment → Source* and select **GitHub Actions**.
+GitHub Pages serves the repo root directly — no build, no workflow (the files
+*are* the site; `.nojekyll` tells Pages to skip Jekyll). **One-time setup:** in
+the repo, go to *Settings → Pages → Build and deployment*, set **Source** to
+**Deploy from a branch**, pick **`main`** / **`/ (root)`**, and Save. Every push
+to `main` republishes automatically.
